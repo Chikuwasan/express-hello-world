@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
+const socketIO = require('socket.io');
+
 app.get("/", (req, res) => res.type('html').send(html));
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
@@ -9,7 +11,28 @@ const server = app.listen(port, () => console.log(`Example app listening on port
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-const html = `
+const io = socketIO(server);
+
+// グローバル変数
+let iCountUser = 0; // ユーザー数
+
+// 接続時の処理
+io.on('connection', (socket) => {
+    console.log('connection');
+ 
+    // 切断時の処理
+    socket.on('disconnect', () => {
+        console.log('disconnect');
+    });
+
+    // 新しいメッセージ受信時の処理
+    socket.on('new message', (strMessage) => {
+        console.log('new message', strMessage);
+    });
+});
+
+
+/*const html = `
 <!DOCTYPE html>
 <html>
   <head>
@@ -58,4 +81,25 @@ const html = `
     </section>
   </body>
 </html>
-`
+`*/
+
+const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>mychat</title>
+</head>
+<body>
+  <h1>node.js を触ってみた</h1>
+  <form action="">
+    <input type="text" id="input_message" autocomplete="off" />
+    <button type="submit" id="input_button">Send</button>
+  </form>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
+
+`;
