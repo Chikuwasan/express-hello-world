@@ -66,7 +66,7 @@ function convertToText(obj) {
 function makeResponce() {
   let text = "";
   for (let i = messages.length - 1; i >= 0; i--) {
-    text += `${messages[i]}<br>`;
+    text += `${messages[i]}\n`;
   }
   return `<h1>送られてきたやつリスト</h1><textarea style="width: 500px; height: 500px;">${text}</textarea><br>以上。POST受信した後のページってどうやってつくるんだ？`;
 }
