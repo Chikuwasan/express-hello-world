@@ -14,7 +14,8 @@ server.headersTimeout = 120 * 1000;
 //const io = socketIO(server);
 
 // グローバル変数
-let iCountUser = 0; // ユーザー数
+//let iCountUser = 0; // ユーザー数
+let messages = [];
 
 // // 接続時の処理
 // io.on('connection', (socket) => {
@@ -39,8 +40,18 @@ app.use(express.static('public'))
 app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
   console.log(req.body)
-  res.send('Done')
+  messages.push(req.body);
+  res.send(makeResponce());
 })
+
+function makeResponce() {
+  let html = "<h1>送られてきたやつリスト</h1>";
+  for (let i = messages.length - 1; i >= 0; i--) {
+    html += `${messages[i]}<br>`;
+  }
+  html += "<br>以上。POST受信した後のページってどうやってつくるんだ？";
+  return html;
+}
 
 
 /*const html = `
@@ -94,24 +105,21 @@ app.post('/foo', (req, res) => {
 </html>
 `*/
 
-const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>mychat</title>
-</head>
-<body>
-  <h1>node.js を触ってみた</h1>
-  <form method="POST" action="/foo">
-    <input type="text" name="country" placeholder="country" />
-    <input type="text" name="city" placeholder="city" />
-    <input type="submit" value="Submit" />
-  </form>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="client.js"></script>
-</body>
-</html>
+// const html = `
+// <!DOCTYPE html>
+// <html>
+// <head>
+//   <meta charset="utf-8">
+//   <title>mychat</title>
+// </head>
+// <body>
+//   <h1>node.js を触ってみた</h1>
+//   <form method="POST" action="/foo">
+//     <input type="text" name="country" placeholder="country" />
+//     <input type="text" name="city" placeholder="city" />
+//     <input type="submit" value="Submit" />
+//   </form>
+// </body>
+// </html>
 
-`;
+// `;
