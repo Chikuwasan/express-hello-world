@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
-const socketIO = require('socket.io');
+//const socketIO = require('socket.io');
 
 app.get("/", (req, res) => res.type('html').send(html));
 
@@ -11,24 +11,32 @@ const server = app.listen(port, () => console.log(`Example app listening on port
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-const io = socketIO(server);
+//const io = socketIO(server);
 
 // グローバル変数
 let iCountUser = 0; // ユーザー数
 
-// 接続時の処理
-io.on('connection', (socket) => {
-    console.log('connection');
+// // 接続時の処理
+// io.on('connection', (socket) => {
+//     console.log('connection');
  
-    // 切断時の処理
-    socket.on('disconnect', () => {
-        console.log('disconnect');
-    });
+//     // 切断時の処理
+//     socket.on('disconnect', () => {
+//         console.log('disconnect');
+//     });
 
-    // 新しいメッセージ受信時の処理
-    socket.on('new message', (strMessage) => {
-        console.log('new message', strMessage);
-    });
+//     // 新しいメッセージ受信時の処理
+//     socket.on('new message', (strMessage) => {
+//         console.log('new message', strMessage);
+//     });
+// });
+
+//POSTリクエストの作成
+app.post("/", (req, res) => {
+  //HTTPリクエストのボディを出力
+  console.log(req.body);
+  console.log("POSTリクエストを受け取りました");
+  res.end();
 });
 
 
@@ -92,7 +100,7 @@ const html = `
 </head>
 <body>
   <h1>node.js を触ってみた</h1>
-  <form action="">
+  <form action="" method="post">
     <input type="text" id="input_message" autocomplete="off" />
     <button type="submit" id="input_button">Send</button>
   </form>
