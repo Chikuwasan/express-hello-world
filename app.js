@@ -55,10 +55,11 @@ function convertToText(obj) {
     for (let i = 0; i < key.length; i++) {
       texts.push(`${key[i]}: ${obj[key[i]]}`);
     }
-    if (texts.includes('>') || texts.includes('<')) {
+    const text = texts.join(',');
+    if (text.includes('>') || text.includes('<')) {
       return;
     } else {
-      messages.push(texts.join(','));
+      messages.push(text);
     }
   }
 }
