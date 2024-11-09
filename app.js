@@ -4,8 +4,8 @@ const port = process.env.PORT || 3001;
 
 //const socketIO = require('socket.io');
 
-//app.get("/", (req, res) => res.type('html').send(html));
-app.use(express.static('public'))
+app.get("/", (req, res) => res.type('html').send(html));
+//app.use(express.static('public'))
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -46,12 +46,12 @@ app.post('/foo', (req, res) => {
 })
 
 function makeResponce() {
-  let html = "<h1>送られてきたやつリスト</h1>";
+  let text = "<h1>送られてきたやつリスト</h1>";
   for (let i = messages.length - 1; i >= 0; i--) {
-    html += `${messages[i]}<br>`;
+    text += `${messages[i]}<br>`;
   }
-  html += "<br>以上。POST受信した後のページってどうやってつくるんだ？";
-  return html;
+  text += "<br>以上。POST受信した後のページってどうやってつくるんだ？";
+  return text;
 }
 
 
@@ -106,21 +106,21 @@ function makeResponce() {
 </html>
 `*/
 
-// const html = `
-// <!DOCTYPE html>
-// <html>
-// <head>
-//   <meta charset="utf-8">
-//   <title>mychat</title>
-// </head>
-// <body>
-//   <h1>node.js を触ってみた</h1>
-//   <form method="POST" action="/foo">
-//     <input type="text" name="country" placeholder="country" />
-//     <input type="text" name="city" placeholder="city" />
-//     <input type="submit" value="Submit" />
-//   </form>
-// </body>
-// </html>
+const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>mychat</title>
+</head>
+<body>
+  <h1>node.js を触ってみた</h1>
+  <form method="POST" action="/foo">
+    <input type="text" name="country" placeholder="country" />
+    <input type="text" name="city" placeholder="city" />
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+</html>
 
-// `;
+`;
