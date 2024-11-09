@@ -42,7 +42,7 @@ app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
   console.log(req.body)
   convertToText(req.body);
-  checkCommand();
+  checkCommand(req.body);
   res.send(makeResponce());
 })
 
