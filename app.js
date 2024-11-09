@@ -19,7 +19,7 @@ let iCountUser = 0; // ユーザー数
 // // 接続時の処理
 // io.on('connection', (socket) => {
 //     console.log('connection');
- 
+
 //     // 切断時の処理
 //     socket.on('disconnect', () => {
 //         console.log('disconnect');
@@ -31,13 +31,12 @@ let iCountUser = 0; // ユーザー数
 //     });
 // });
 
-//POSTリクエストの作成
-app.post("/", (req, res) => {
-  //HTTPリクエストのボディを出力
-  console.log(req.body);
-  console.log("POSTリクエストを受け取りました");
-  res.end();
-});
+// GET /foo
+app.post('/foo', (req, res) => {
+  console.log('--- post() /foo called --- うけとりました')
+  console.log(req.body)
+  res.send('Done')
+})
 
 
 /*const html = `
@@ -100,9 +99,10 @@ const html = `
 </head>
 <body>
   <h1>node.js を触ってみた</h1>
-  <form action="" method="post">
-    <input type="text" id="input_message" autocomplete="off" />
-    <button type="submit" id="input_button">Send</button>
+  <form method="POST" action="/foo">
+    <input type="text" name="country" placeholder="country" />
+    <input type="text" name="city" placeholder="city" />
+    <input type="submit" value="Submit" />
   </form>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
