@@ -5,6 +5,7 @@ const port = process.env.PORT || 3001;
 //const socketIO = require('socket.io');
 
 //app.get("/", (req, res) => res.type('html').send(html));
+app.use(express.static('public'))
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -35,7 +36,7 @@ let messages = [];
 // body-parser
 app.use(express.urlencoded({ extended: true }))
 // static built-in middleware
-app.use(express.static('public'))
+//app.use(express.static('public'))
 // GET /foo
 app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
