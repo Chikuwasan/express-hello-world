@@ -42,6 +42,7 @@ app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
   console.log(req.body)
   convertToText(req.body);
+  checkCommand();
   res.send(makeResponce());
 })
 
@@ -54,17 +55,20 @@ function convertToText(obj) {
     for (let i = 0; i < key.length; i++) {
       texts.push(`${key[i]}: ${obj[key[i]]}`);
     }
-    messages.push(texts.join(','));
+    if (texts.includes('>') || texts.includes('<')) {
+      return;
+    } else {
+      messages.push(texts.join(','));
+    }
   }
 }
 
 function makeResponce() {
-  let text = "<h1>送られてきたやつリスト</h1>";
+  let text = "";
   for (let i = messages.length - 1; i >= 0; i--) {
     text += `${messages[i]}<br>`;
   }
-  text += "<br>以上。POST受信した後のページってどうやってつくるんだ？";
-  return `<textarea>${text}</textarea>`;
+  return `<h1>送られてきたやつリスト</h1><textarea style="width: 500px; height: 500px;">${text}</textarea><br>以上。POST受信した後のページってどうやってつくるんだ？`;
 }
 
 function checkCommand(obj) {
