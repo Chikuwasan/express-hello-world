@@ -31,9 +31,13 @@ let iCountUser = 0; // ユーザー数
 //     });
 // });
 
+// body-parser
+app.use(express.urlencoded({ extended: true }))
+// static built-in middleware
+app.use(express.static('public'))
 // GET /foo
 app.post('/foo', (req, res) => {
-  console.log('--- post() /foo called --- うけとりました')
+  console.log('--- post() /foo called ---')
   console.log(req.body)
   res.send('Done')
 })
