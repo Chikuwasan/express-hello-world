@@ -41,9 +41,18 @@ app.use(express.urlencoded({ extended: true }))
 app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
   console.log(req.body)
-  messages.push(req.body);
+  messages.push(convertToText(req.body));
   res.send(makeResponce());
 })
+
+function convertToText(obj) {
+  const key = Object.keys(obj);
+  let texts = [];
+  for (let i = 0; i < key.length; i++) {
+    texts.push(`${key[i]}: ${obj[key[i]]}`);
+  }
+  return texts.join(',');
+}
 
 function makeResponce() {
   let text = "<h1>送られてきたやつリスト</h1>";
