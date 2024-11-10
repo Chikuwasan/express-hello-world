@@ -32,7 +32,11 @@ function transmit(content, func) {
 function showData(data) {
   console.log(data);
   if (data["type"] == "append") {
-    document.getElementById("textarea-2").value += "\n" + data["content"];
+    if (latestID == -1) {
+      document.getElementById("textarea-2").value = data["content"];
+    } else {
+      document.getElementById("textarea-2").value += "\n" + data["content"];
+    }
   } else if (data["type"] == "set") {
     document.getElementById("textarea-2").value = data["content"];
   }

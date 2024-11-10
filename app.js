@@ -120,18 +120,20 @@ app.post('/your-endpoint', (req, res) => {
   } else {
     let content;
     let type = "append";
+    let latestID = r["latestID"];
     if (rc == "") {
       content = "<accessed>";
     } else if (rc == "/delete") {
       content = "<deleted>";
       type = "set";
+      latestID = -1;
       rooms[r["room"]] = [];
     } else {
       content = rc;
     }
     const decorated = decorateData(content);
     rooms[r["room"]].push(decorated);
-    const list = rooms[r["room"]].slice(r["latestID"] + 1);
+    const list = rooms[r["room"]].slice(latestID + 1);
     res.json({
       "content": list.join('\n'),
       "latestID": rooms[r["room"]].length - 1,
