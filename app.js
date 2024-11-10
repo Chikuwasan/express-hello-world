@@ -19,7 +19,7 @@ server.headersTimeout = 120 * 1000;
 
 // グローバル変数
 //let iCountUser = 0; // ユーザー数
-let messages = [];
+//let messages = [];
 
 // // 接続時の処理
 // io.on('connection', (socket) => {
@@ -39,9 +39,12 @@ let messages = [];
 // body-parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// この .json がいる。jsonをpostで通信するには。
+
 // static built-in middleware
 //app.use(express.static('public'))
 // GET /foo
+/*
 app.post('/foo', (req, res) => {
   console.log('--- post() /foo called ---')
   console.log(req.body)
@@ -80,15 +83,64 @@ function checkCommand(obj) {
   if (obj["country"] == "stop" && obj["city"] == "123456") {
     messages = [];
   }
-}
+}*/
+
+let date = new Date();
+let rooms = {};
 
 // サーバー側 (Express)
 app.post('/your-endpoint', (req, res) => {
   const data = req.body;
   console.log(req.body);
   // 処理してレスポンスを送信
-  res.json({ received: data });
+
+  const r = req.body;
+  const rc = r["content"];
+  if (r["room"] == "command") {
+    if (rc == "/reset") {
+      rooms = {};
+    } else if (rc == "/watch") {
+      console.log(rooms);
+    }
+    res.json({
+      "content": "",
+      "latestID": -1,
+      "type": "set"
+    });
+  } else if (typeof rooms[r["room"]] == "undefined") {
+    rooms[r["room"]] = [];
+    res.json({
+      "content": decorateData("<access>"),
+      "latestID": 0,
+      "type": "set"
+    });
+  } else {
+    let content;
+    let type = "append";
+    if (rc == "") {
+      content = "<access>";
+    } else if (rc == "/delete") {
+      content = "";
+      type = "set";
+      rooms[r["room"]] = [];
+    } else {
+      content = rc;
+    }
+    const decorated = decorateData(content);
+    rooms[r["room"]].push(decorated);
+    const list = rooms[r["room"]].slice(r["latestID"] + 1);
+    res.json({
+      "content": list.join('\n'),
+      "latestID": rooms[r["room"]].length - 1,
+      "type": type
+    });
+  }
 });
+
+function decorateData(data) {
+  const time = '[' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + '] ';
+  return time + data;
+}
 
 
 /*const html = `
@@ -141,7 +193,7 @@ app.post('/your-endpoint', (req, res) => {
   </body>
 </html>
 `*/
-
+/*
 const html = `
 <!DOCTYPE html>
 <html>
@@ -160,3 +212,4 @@ const html = `
 </html>
 
 `;
+*/
