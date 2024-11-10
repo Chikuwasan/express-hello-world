@@ -1,6 +1,18 @@
 #button {
   position: relative;
   background-color: rgb(216, 234, 250);
+  cursor: pointer;
+  height: 50px;
+  width: 100px;
+  border-radius: 10px;
+  margin: 10px;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: 900;
+  box-shadow: 0px 0px 10px -3px black;
 }
 
 #textarea-1, #textarea-2 {
