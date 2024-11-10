@@ -37,7 +37,8 @@ let messages = [];
 // });
 
 // body-parser
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // static built-in middleware
 //app.use(express.static('public'))
 // GET /foo
