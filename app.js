@@ -85,12 +85,10 @@ function checkCommand(obj) {
   }
 }*/
 
-let date = new Date();
 let rooms = {};
 
 // サーバー側 (Express)
 app.post('/your-endpoint', (req, res) => {
-  const data = req.body;
   console.log(req.body);
   // 処理してレスポンスを送信
 
@@ -108,19 +106,24 @@ app.post('/your-endpoint', (req, res) => {
       "type": "set"
     });
   } else if (typeof rooms[r["room"]] == "undefined") {
-    rooms[r["room"]] = [];
+    rooms[r["room"]] = [
+      decorateData("<created>")
+    ];
+    if (rc != "") {
+      rooms[r["room"]].push(decorateData(rc));
+    }
     res.json({
-      "content": decorateData("<access>"),
-      "latestID": 0,
+      "content": rooms[r["room"]].join("\n"),
+      "latestID": rooms[r["room"]].length - 1,
       "type": "set"
     });
   } else {
     let content;
     let type = "append";
     if (rc == "") {
-      content = "<access>";
+      content = "<accessed>";
     } else if (rc == "/delete") {
-      content = "";
+      content = "<deleted>";
       type = "set";
       rooms[r["room"]] = [];
     } else {
@@ -138,6 +141,7 @@ app.post('/your-endpoint', (req, res) => {
 });
 
 function decorateData(data) {
+  let date = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }));
   const time = '[' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + '] ';
   return time + data;
 }
