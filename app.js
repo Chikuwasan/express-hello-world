@@ -4,8 +4,11 @@ const port = process.env.PORT || 3001;
 
 //const socketIO = require('socket.io');
 
-app.get("/", (req, res) => res.type('html').send(html));
-//app.use(express.static('public'))
+//app.get("/", (req, res) => res.type('html').send(html));
+app.use("/", express.static('public'))
+// app.get("/", (req, res) => {
+
+// });
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -77,6 +80,13 @@ function checkCommand(obj) {
     messages = [];
   }
 }
+
+// サーバー側 (Express)
+app.post('/your-endpoint', (req, res) => {
+  const data = req.body;
+  // 処理してレスポンスを送信
+  res.json({ received: data });
+});
 
 
 /*const html = `
