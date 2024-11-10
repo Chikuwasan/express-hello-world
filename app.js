@@ -84,6 +84,7 @@ function checkCommand(obj) {
 // サーバー側 (Express)
 app.post('/your-endpoint', (req, res) => {
   const data = req.body;
+  console.log(req.body);
   // 処理してレスポンスを送信
   res.json({ received: data });
 });
